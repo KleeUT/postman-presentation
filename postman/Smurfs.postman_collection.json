@@ -1,0 +1,89 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Smurfs",
+		"_postman_id": "f5cba783-4613-411c-76f1-c671e7c98563",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetSmurfs",
+			"request": {
+				"url": "localhost:8080/smurfs",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "No Smurf",
+			"request": {
+				"url": "localhost:8080/smurf",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Smurf",
+			"request": {
+				"url": "http://localhost:8080/smurf?id=3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add smurf",
+			"request": {
+				"url": "localhost:8080/smurf",
+				"method": "POST",
+				"header": [
+					{
+						"key": "conte",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"coder\",\n\t\"role\": \"webmaster\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Post",
+			"request": {
+				"url": "localhost:8080/smurf",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"bad smurf\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
