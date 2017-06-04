@@ -1,14 +1,14 @@
-'use strict';
-const fs = require('fs');
-const path = require('path');
+"use strict";
+const fs = require("fs");
+const path = require("path");
 
-const newman = require('newman');
-const environmentFile = require('./RQP - Review.postman_environment.json');
+const newman = require("newman");
+const environmentFile = require("./postman_environment.json");
 
-describe('Postman: ', () => {
+describe("Postman: ", () => {
   let envData = null;
   const branch = process.env.BRANCH || process.env.npm_config_branch;
-  if (branch && branch !== 'master') {
+  if (branch && branch !== "master") {
     envData = setEnvData(branch);
   }
   let collections = findAllCollectionsAndData();
@@ -22,46 +22,56 @@ describe('Postman: ', () => {
     const postmanCollection = require(collection.collection);
 
     it(`Api Tests Collection - ${collection.name}`, done => {
-      runTest(collection.name, postmanCollection, collection.dataFile, envData || environmentFile, iterations, done)
+      runTest(
+        collection.name,
+        postmanCollection,
+        collection.dataFile,
+        envData || environmentFile,
+        iterations,
+        done
+      );
     }).timeout(timeout);
-  };
+  }
 });
-
 
 function setEnvData(branch) {
   const envData = environmentFile;
-  const envKey = envData.values.filter(val => val.key === 'env')[0];
+  const envKey = envData.values.filter(val => val.key === "env")[0];
   envKey.value = `-${branch}`;
   envData.values = envKey;
   return envData;
 }
 
 function findAllCollectionsAndData() {
-  let directories = fs.readdirSync(__dirname).filter(file => fs.statSync(path.join(__dirname, file)).isDirectory())
+  let collectionsDir = path.join(__dirname, "collections");
+  let directories = fs
+    .readdirSync(collectionsDir)
+    .filter(file => fs.statSync(path.join(collectionsDir, file)).isDirectory());
   return directories.map(dir => {
-    let dataFilePath = path.join(__dirname, dir, 'data.json');
+    let dataFilePath = path.join(collectionsDir, dir, "data.json");
     let result = {
-      name: dir, collection: `./${dir}/collection.json`,
+      name: dir,
+      collection: `./collections/${dir}/collection.json`,
       dataFile: fs.existsSync(dataFilePath) ? dataFilePath : undefined
-    }
-    console.log(dir, result);
+    };
     return result;
-  })
+  });
 }
 
 function runTest(name, collection, dataFile, environment, iterations, done) {
-  newman.run({
-    environment: environment,
-    collection: collection,
-    reporters: 'cli',
-    insecure: true,
-    iterationData: dataFile, 
-    iterationCount: iterations,
-  })
-    .on('start', () => {
-      console.log('Starting newman test collection: ', name);
+  newman
+    .run({
+      environment: environment,
+      collection: collection,
+      reporters: "cli",
+      insecure: true,
+      iterationData: dataFile,
+      iterationCount: iterations
     })
-    .on('done', (err, summary) => {
+    .on("start", () => {
+      console.log("Starting newman test collection: ", name);
+    })
+    .on("done", (err, summary) => {
       if (err || summary.run.failures.length > 0) {
         outputTestFailures(summary.run.failures);
         process.exit(1);
@@ -72,7 +82,6 @@ function runTest(name, collection, dataFile, environment, iterations, done) {
       }
     });
 }
-
 
 function outputTestFailures(failures) {
   failures.forEach(item => {

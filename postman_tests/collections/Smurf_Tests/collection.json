@@ -1,0 +1,127 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Smurfs Tests",
+		"_postman_id": "b41bd79e-3f35-b956-613e-a0287bfb8b87",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetSmurfs",
+			"request": {
+				"url": "localhost:8080/smurfs",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "No Smurf",
+			"request": {
+				"url": "localhost:8080/smurf",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Smurf",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var schema = { ",
+							"    required: ['id','name','role']",
+							"}",
+							"",
+							"var valid = tv4.validate(jsonData, schema);",
+							"",
+							"tests[\"matches schema\"] = valid;",
+							"",
+							"if(!valid){",
+							"    console.log(t4.error)",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/smurf?id=3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add smurf",
+			"request": {
+				"url": "localhost:8080/smurf",
+				"method": "POST",
+				"header": [
+					{
+						"key": "conte",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"coder\",\n\t\"role\": \"webmaster\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 400;",
+							"",
+							"",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"response body is correct\"] = jsonData.message  == \"Smurfs must have a name and a role\""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:8080/smurf",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"bad smurf\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
