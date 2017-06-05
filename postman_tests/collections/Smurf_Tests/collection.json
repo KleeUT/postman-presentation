@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Smurfs Tests",
-		"_postman_id": "b41bd79e-3f35-b956-613e-a0287bfb8b87",
+		"_postman_id": "4a206e6f-dad5-a5df-ed61-a573b3f7186a",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -13,7 +13,10 @@
 				"url": "localhost:8080/smurfs",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -24,19 +27,23 @@
 				"url": "localhost:8080/smurf",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Smurf",
+			"name": "Get Smurf test",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"type": "text/javascript",
 						"exec": [
+							"console.log(\"Data: \",data)",
 							"var jsonData = JSON.parse(responseBody);",
 							"var schema = { ",
 							"    required: ['id','name','role']",
@@ -45,16 +52,38 @@
 							"var valid = tv4.validate(jsonData, schema);",
 							"",
 							"tests[\"matches schema\"] = valid;",
-							"",
+							"tests[`actual name ${jsonData.name} matches expected ${data.name}${JSON.stringify(data)}`] = jsonData.name == data.name;",
 							"if(!valid){",
 							"    console.log(t4.error)",
-							"}"
+							"}",
+							"",
+							"",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");"
 						]
 					}
 				}
 			],
 			"request": {
-				"url": "{{url}}/smurf?id=3",
+				"url": {
+					"raw": "{{url}}/smurf?id={{id}}",
+					"auth": {},
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"smurf"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{id}}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -81,7 +110,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"coder\",\n\t\"role\": \"webmaster\"\n}"
+					"raw": "{\n  \"name\": \"coder\",\n  \"role\": \"webmaster\"\n}"
 				},
 				"description": ""
 			},
@@ -117,7 +146,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"bad smurf\"\n}"
+					"raw": "{\n  \"name\": \"bad smurf\"\n}"
 				},
 				"description": ""
 			},

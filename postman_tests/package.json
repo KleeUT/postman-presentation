@@ -4,7 +4,8 @@
   "description": "Executes postman tests",
   "main": "runner.js",
   "scripts": {
-    "test": "mocha runner.js"
+    "test": "mocha runner.js",
+    "newman": "newman --c collections/Smurf_Tests/collection.json -e postman_environment.json -d collections/Smurf_Tests/data.json"
   },
   "author": "",
   "license": "ISC",
