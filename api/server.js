@@ -10,6 +10,14 @@ server.get("/health-check", (request, response) => {
   }, 5000);
 });
 
+server.get('/echo', (request, response) => {
+  response.json({headers: request.headers, body: request.body, query: request.query});
+})
+
+server.post('/echo', (request, response) => {
+  response.json({headers: request.headers, body: request.body, query: request.query});
+})
+
 server.get("/smurfs", (request, response) => {
   response.json(smurfService.getSmurfs());
 });
