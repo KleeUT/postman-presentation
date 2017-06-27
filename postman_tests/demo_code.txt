@@ -1,0 +1,17 @@
+demo code
+
+# 1 
+add Smurf
+body
+{
+	"name": "test-smurf-{{$guid}}",
+	"role": "{{role}}"
+}
+
+pre request 
+postman.setGlobalVariable("role", "some role");
+
+tests
+tests["Status code is 200"] = responseCode.code === 200;
+
+tests["Response time is less than 200ms"] = responseTime < 200;
