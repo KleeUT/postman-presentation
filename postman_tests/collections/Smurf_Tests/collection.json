@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Smurfs Tests",
-		"_postman_id": "4a206e6f-dad5-a5df-ed61-a573b3f7186a",
+		"_postman_id": "f9b2f4b4-43e5-4ef9-e267-ff4f5fad9a8e",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -36,14 +36,13 @@
 			"response": []
 		},
 		{
-			"name": "Get Smurf test",
+			"name": "Get Smurf",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"console.log(\"Data: \",data)",
 							"var jsonData = JSON.parse(responseBody);",
 							"var schema = { ",
 							"    required: ['id','name','role']",
@@ -52,22 +51,17 @@
 							"var valid = tv4.validate(jsonData, schema);",
 							"",
 							"tests[\"matches schema\"] = valid;",
-							"tests[`actual name ${jsonData.name} matches expected ${data.name}${JSON.stringify(data)}`] = jsonData.name == data.name;",
+							"",
 							"if(!valid){",
 							"    console.log(t4.error)",
-							"}",
-							"",
-							"",
-							"",
-							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");"
+							"}"
 						]
 					}
 				}
 			],
 			"request": {
 				"url": {
-					"raw": "{{url}}/smurf?id={{id}}",
-					"auth": {},
+					"raw": "{{url}}/smurf?id=3",
 					"host": [
 						"{{url}}"
 					],
@@ -77,16 +71,17 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "{{id}}",
-							"equals": true,
-							"description": ""
+							"value": "3"
 						}
 					],
 					"variable": []
 				},
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -110,7 +105,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"coder\",\n  \"role\": \"webmaster\"\n}"
+					"raw": "{\n\t\"name\": \"tester smurf\",\n\t\"role\": \"breaks your things\"\n}"
 				},
 				"description": ""
 			},
@@ -146,7 +141,46 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"bad smurf\"\n}"
+					"raw": "{\n\t\"name\": \"bad smurf\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Echo Service",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/echo?ddd=sydney",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"echo"
+					],
+					"query": [
+						{
+							"key": "ddd",
+							"value": "sydney",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"hello\":\"world\"\n}"
 				},
 				"description": ""
 			},
