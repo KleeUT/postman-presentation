@@ -5,7 +5,7 @@
   "main": "runner.js",
   "scripts": {
     "test": "mocha runner.js",
-    "newman": "newman run collections/Smurf_Tests/collection.json -e ./postman_environment.json"
+    "newman": "newman --c collections/Smurf_Tests/collection.json -e postman_environment.json -d collections/Smurf_Tests/data.json"
   },
   "author": "",
   "license": "ISC",

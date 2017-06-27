@@ -1,6 +1,6 @@
 let smurfs = [
   { id: 1, name: "Papa", role: "patriarch" },
-  { id: 2, name: "Smurfette", role: "spy" },
+  { id: 2, name: "Smurfette", role: "Has pretty long hair" },
   { id: 3, name: "Hefty", role: "lifts the heavy thing" }
 ];
 module.exports = {
