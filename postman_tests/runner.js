@@ -6,11 +6,13 @@ const newman = require("newman");
 const environmentFile = require("./postman_environment.json");
 
 describe("Postman: ", () => {
+  // Override some of the environment with branch information
   let envData = null;
   const branch = process.env.BRANCH || process.env.npm_config_branch;
   if (branch && branch !== "master") {
     envData = setEnvData(branch);
   }
+  
   let collections = findAllCollectionsAndData();
 
   for (let i = 0; i < collections.length; i++) {
@@ -21,6 +23,7 @@ describe("Postman: ", () => {
     const iterations = data.length;
     const postmanCollection = require(collection.collection);
 
+    // Use the name of the directory as the name of the Mocha test
     it(`Api Tests Collection - ${collection.name}`, done => {
       runTest(
         collection.name,
@@ -52,6 +55,7 @@ function findAllCollectionsAndData() {
     let result = {
       name: dir,
       collection: `./collections/${dir}/collection.json`,
+      // Collections and environments are JS Objects datafile is a path to the file
       dataFile: fs.existsSync(dataFilePath) ? dataFilePath : undefined
     };
     return result;
@@ -74,7 +78,7 @@ function runTest(name, collection, dataFile, environment, iterations, done) {
     .on("done", (err, summary) => {
       if (err || summary.run.failures.length > 0) {
         outputTestFailures(summary.run.failures);
-        process.exit(1);
+        // process.exit(1);
         done(new Error(`\n ${name} collection run encountered failures`));
       } else {
         console.log(`\n  ${name} collection run completed. :partyparrot:`);
